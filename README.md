@@ -10,7 +10,7 @@ Repository for the MATLAB implementation of the "RGB-D image Segmentation using 
 **Load** data/samples files name: **rgbd\_info\_1.mat** and **rgbd\_info\_2.mat** <br>
 
 ## Application:
-This segmentation method has been used to segment/analyze RGB-D images captured by the Microsoft Kinect camera. For details and other possible applications please see the reference.
+This segmentation method has been used to segment/analyze RGB-D images captured by the Microsoft Kinect camera. For details and other possible applications please see the references.
 
 ## Results to compare:
 **JCSD\_RM\_Results.zip** file contains the results of applying JCSA-RM [1,2] method on the NYU depth database (NYUD2) [3]. Each result file consists of _segmentation_ - labels of pixels and _final scores_ – VoI, BDE, PRI and GTRC for the 1449 NYUD2 [3] images in half scaled (down) image.

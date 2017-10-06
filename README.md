@@ -15,8 +15,8 @@ This segmentation method has been used to segment/analyze RGB-D images captured 
 ## Results to compare:
 **JCSD\_RM\_Results.zip** file contains the results of applying JCSA-RM [1,2] method on the NYU depth database (NYUD2) [3]. Each result file consists of _segmentation_ - labels of pixels and _final scores_ – VoI, BDE, PRI and GTRC for the 1449 NYUD2 [3] images in half scaled (down) image.
 
-## Code issues:
-If you encounter error with - **computeTraceTerm** then go to the directory called 'rgbd' and compile mex file as:
+## Code running issues:
+It runs on Matlab2017b. If you encounter error with - **computeTraceTerm** then go to the directory called 'rgbd' and compile mex file as: <br>
 **mex computeTraceTerm.cpp**.
 
 ## Extensions and scopes:

@@ -1,6 +1,7 @@
 clear all; close all; clc;
+addpath('rgbd/')
 
-MethodType = 'rb_jcsa_rm'; % 'rb_jcsa'
+MethodType = 'rb_jcsd_rm'; % 'rb_jcsa_rm'; % 'rb_jcsa'; % 'rb_jcsd'; 
 
 % Load image and other information
 fileName = 'rgbd_info_1.mat'; % this file contains the color image, depth image and image normals
@@ -37,8 +38,16 @@ szh(2) = uint16(size(rgbImg(1:sc:end,1:sc:end,:),2));
 combFeat = getCombinedFeatures(allInfo, sc);
 
 % Generate oversegmentation
-display('Applying JCSA Clustering ...');
-label = uint8(fusionBD_Color_3D_Axis(combFeat, kMax, [1 1 1], opt));
+if(strcmp(MethodType, 'rb_jcsa_rm') | strcmp(MethodType, 'rb_jcsa'))
+    display('Applying JCSA Clustering ...');
+    label = uint8(fusionBD_Color_3D_Axis(combFeat, kMax, [1 1 1], opt));
+elseif(strcmp(MethodType, 'rb_jcsd_rm') | strcmp(MethodType, 'rb_jcsd'))
+    display('Applying JCSD Clustering ...');
+    label = uint8(fusionBD_Color_3D_Normal(combFeat, kMax, [1 1 1], opt));
+else
+    display('Choose your method name properly');
+end
+
 labelImg = reshape(label, szh(1), szh(2));
 
 % post-processing
@@ -86,7 +95,44 @@ if(strcmp(MethodType, 'rb_jcsa_rm'))
     end
     
     % Apply RM method
-    img = getRAGMergeSegments_Edge_Plane_gui(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc);
+    img = getRAGMergeSegments(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc, MethodType);
+elseif(strcmp(MethodType, 'rb_jcsd_rm'))
+    % Compute parameters of the distributions
+    parNormal = getParamsVMFBD(combFeat(:,7:9), tmpLabImg(:));
+    parColor = getParamsDivergenceGMM(combFeat(:,1:3), tmpLabImg(:));
+    
+    % Set initial parameters for the neighborhood regions
+    rgnb.nbsegs = getRegionNeighbors(tmpLabImg);
+    rgnb.Div_N = ones(length(rgnb.nbsegs))*5000;
+    rgnb.Div_C = ones(length(rgnb.nbsegs))*5000;
+    rgnb.KappaMerged = ones(length(rgnb.nbsegs)) * -20;
+    
+    % Update parameters for the neighborhood regions
+    for i=1:length(rgnb.nbsegs)
+        adjs = rgnb.nbsegs{i};
+        adjEdges = cell(length(adjs),1);
+        
+        for j = 1:length(adjs)
+            commonEdge = intersect(neighbors.segment_fragments{i}, neighbors.segment_fragments{adjs(j)});
+            commIndx = [];
+            for k=1:length(commonEdge)
+                commIndx = [commIndx; fliplr(floor(edges{commonEdge(k)}))];
+            end
+            rgnb.adjEdges{i,adjs(j)} = commIndx;
+            
+            % Compute kappa after it is merged with the neighbor cluster
+            rgnb.KappaMerged(i,adjs(j)) = mergeKappaVMFMM(parNormal, [i,adjs(j)]);
+            
+            % Compute BD_normal among the neighbors
+            rgnb.Div_N(i,adjs(j)) = parNormal.DLNF(i) - parNormal.DLNF(adjs(j)) - ( (parNormal.eta(i,:) - parNormal.eta(adjs(j),:)) * parNormal.theta_cl(adjs(j),:)');
+            
+            % Compute BD_color among the neighbors
+            rgnb.Div_C(i,adjs(j)) = compute_Div_C(parColor, i, adjs(j));
+        end
+    end
+    
+    % Apply RM method
+    img = getRAGMergeSegments(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc, MethodType);
 else
     img = tmpLabImg;
 end

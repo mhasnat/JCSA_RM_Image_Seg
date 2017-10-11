@@ -22,7 +22,7 @@ function varargout = RGBD_Seg_JCSA_RM(varargin)
 
 % Edit the above text to modify the response to help RGBD_Seg_JCSA_RM
 
-% Last Modified by GUIDE v2.5 25-Sep-2014 14:37:45
+% Last Modified by GUIDE v2.5 11-Oct-2017 11:31:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -139,8 +139,15 @@ szh(2) = uint16(size(handles.rgbImg(1:sc:end,1:sc:end,:),2));
 combFeat = getCombinedFeatures(allInfo, sc);
 
 % Generate oversegmentation
-display('Applying JCSA Clustering ...');
-label = uint8(fusionBD_Color_3D_Axis(combFeat, kMax, [1 1 1], opt));
+if(strcmp(handles.MethodType, 'rb_jcsa_rm') | strcmp(handles.MethodType, 'rb_jcsa'))
+    display('Applying JCSA Clustering ...');
+    label = uint8(fusionBD_Color_3D_Axis(combFeat, kMax, [1 1 1], opt));
+elseif(strcmp(handles.MethodType, 'rb_jcsd_rm') | strcmp(handles.MethodType, 'rb_jcsd'))
+    display('Applying JCSD Clustering ...');
+    label = uint8(fusionBD_Color_3D_Normal(combFeat, kMax, [1 1 1], opt));
+else
+    display('Choose your method name properly');
+end
 
 labelImg = reshape(label, szh(1), szh(2));
 
@@ -189,7 +196,44 @@ if(strcmp(handles.MethodType, 'rb_jcsa_rm'))
     end
     
     % Apply RM method
-    img = getRAGMergeSegments_Edge_Plane_gui(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc);
+    img = getRAGMergeSegments(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc, handles.MethodType);
+elseif(strcmp(handles.MethodType, 'rb_jcsd_rm'))
+    % Compute parameters of the distributions
+    parNormal = getParamsVMFBD(combFeat(:,7:9), tmpLabImg(:));
+    parColor = getParamsDivergenceGMM(combFeat(:,1:3), tmpLabImg(:));
+    
+    % Set initial parameters for the neighborhood regions
+    rgnb.nbsegs = getRegionNeighbors(tmpLabImg);
+    rgnb.Div_N = ones(length(rgnb.nbsegs))*5000;
+    rgnb.Div_C = ones(length(rgnb.nbsegs))*5000;
+    rgnb.KappaMerged = ones(length(rgnb.nbsegs)) * -20;
+    
+    % Update parameters for the neighborhood regions
+    for i=1:length(rgnb.nbsegs)
+        adjs = rgnb.nbsegs{i};
+        adjEdges = cell(length(adjs),1);
+        
+        for j = 1:length(adjs)
+            commonEdge = intersect(neighbors.segment_fragments{i}, neighbors.segment_fragments{adjs(j)});
+            commIndx = [];
+            for k=1:length(commonEdge)
+                commIndx = [commIndx; fliplr(floor(edges{commonEdge(k)}))];
+            end
+            rgnb.adjEdges{i,adjs(j)} = commIndx;
+            
+            % Compute kappa after it is merged with the neighbor cluster
+            rgnb.KappaMerged(i,adjs(j)) = mergeKappaVMFMM(parNormal, [i,adjs(j)]);
+            
+            % Compute BD_normal among the neighbors
+            rgnb.Div_N(i,adjs(j)) = parNormal.DLNF(i) - parNormal.DLNF(adjs(j)) - ( (parNormal.eta(i,:) - parNormal.eta(adjs(j),:)) * parNormal.theta_cl(adjs(j),:)');
+            
+            % Compute BD_color among the neighbors
+            rgnb.Div_C(i,adjs(j)) = compute_Div_C(parColor, i, adjs(j));
+        end
+    end
+    
+    % Apply RM method
+    img = getRAGMergeSegments(combFeat, tmpLabImg, thOptions, parNormal, parColor, rgnb, allInfo, sc, handles.MethodType);
 else
     img = tmpLabImg;
 end
@@ -561,3 +605,43 @@ function th_planar_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in rb_jcsa.
+function rb_jcsa_Callback(hObject, eventdata, handles)
+% hObject    handle to rb_jcsa (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of rb_jcsa
+handles.MethodType = 'rb_jcsa';
+
+
+% --- Executes on button press in rb_jcsd.
+function rb_jcsd_Callback(hObject, eventdata, handles)
+% hObject    handle to rb_jcsd (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of rb_jcsd
+handles.MethodType = 'rb_jcsd';
+
+
+% --- Executes on button press in rb_jcsa_rm.
+function rb_jcsa_rm_Callback(hObject, eventdata, handles)
+% hObject    handle to rb_jcsa_rm (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of rb_jcsa_rm
+handles.MethodType = 'rb_jcsa_rm';
+
+
+% --- Executes on button press in rb_jcsd_rm.
+function rb_jcsd_rm_Callback(hObject, eventdata, handles)
+% hObject    handle to rb_jcsd_rm (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of rb_jcsd_rm
+handles.MethodType = 'rb_jcsd_rm';

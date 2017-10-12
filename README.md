@@ -7,7 +7,9 @@ Repository for the MATLAB implementation of the "RGB-D image Segmentation using 
 
 ## How to use demo (tested in Matlab2017b):
 **Run** the MATLAB file name: **RGBD\_Seg\_JCSA\_RM.m** for the GUI version and **demo\_NO\_GUI.m** otherwise<br>
-**Load** data/samples files name: **rgbd\_info\_1.mat** and **rgbd\_info\_2.mat** <br>
+**Load** data/samples files name: **rgbd\_info\_1.mat**, **rgbd\_info\_2.mat**, **rgbd\_info\_1\_better\_normals.mat** and **rgbd\_info\_2\_better\_normals.mat**. <br>
+- Select **\_better\_normals** in order to experiment with unambiguas surface normals.
+- Choose different methods for testing, among: **(a)** JCSA, **(b)** JCSD, **(c)** JCSA-RM and **(d)** JCSD-RM.
 
 ## Application:
 This segmentation method has been used to segment/analyze RGB-D images captured by the Microsoft Kinect camera. For details and other possible applications please see the references.

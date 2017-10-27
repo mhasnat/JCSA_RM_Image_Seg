@@ -1,5 +1,5 @@
 # JCSA-RM RGBD Image Segmentation and Analysis Method [1,2,3]
-Repository for the MATLAB implementation of the "RGB-D image Segmentation using the Joint Color-Spatial-Axial clustering and Region Merging (JCSA-RM)" method.
+Repository for the source code of MATLAB implementation of the "RGB-D image Segmentation using the Joint Color-Spatial-Axial clustering and Region Merging (JCSA-RM)" method.
 
 - The JCSA-RM method is an RGB-D (joint color+depth) image segmentation method. This repo provides demos with/without a GUI with MATLAB code to perform the following tasks: <br>
 **a.** load RGB-D image data from a mat file (contains RGB, Depth and Image Normals in an structure) and display them. <br>

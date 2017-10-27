@@ -1,4 +1,4 @@
-# JCSA-RM RGBD Image Segmentation and Analysis Method
+# JCSA-RM RGBD Image Segmentation and Analysis Method [1,2,3]
 Repository for the MATLAB implementation of the "RGB-D image Segmentation using the Joint Color-Spatial-Axial clustering and Region Merging (JCSA-RM)" method.
 
 - The JCSA-RM method is an RGB-D (joint color+depth) image segmentation method. This repo provides demos with/without a GUI with MATLAB code to perform the following tasks: <br>
@@ -15,14 +15,14 @@ Repository for the MATLAB implementation of the "RGB-D image Segmentation using 
 This segmentation method has been used to segment/analyze RGB-D images captured by the Microsoft Kinect camera. For details and other possible applications please see the references.
 
 ## Results to compare:
-**JCSD\_RM\_Results.zip** file contains the results of applying JCSA-RM [1,2] method on the NYU depth database (NYUD2) [3]. Each result file consists of _segmentation_ - labels of pixels and _final scores_ – VoI, BDE, PRI and GTRC for the 1449 NYUD2 [3] images in half scaled (down) image.
+**JCSD\_RM\_Results.zip** file contains the results of applying JCSA-RM [1,2,3] method on the NYU depth database (NYUD2) [4]. Each result file consists of _segmentation_ - labels of pixels and _final scores_ – VoI, BDE, PRI and GTRC for the 1449 NYUD2 [4] images in half scaled (down) image.
 
 ## Code running issues:
 It runs on Matlab2017b. If you encounter error with - **computeTraceTerm** then go to the directory called 'rgbd' and compile mex file as: <br>
 **mex computeTraceTerm.cpp**.
 
 ## Extensions and scopes:
-- You can extend the **JCSA** method for clustering heterogeneous data. However, for now the method is limited to the 3 Dimensional data with the directional distributions [4,5]. You can also extend it to work with higher dimensional data by extending [4] or [5].
+- You can extend the **JCSA** method for clustering heterogeneous data. However, for now the method is limited to the 3 Dimensional data with the directional distributions [5,6]. You can also extend it to work with higher dimensional data by extending [5] or [6].
 
 - You can use the **RM** method independently to perform segmentation. It requires the clustering labels, the color image and image normals as input.
 
@@ -32,8 +32,10 @@ It runs on Matlab2017b. If you encounter error with - **computeTraceTerm** then 
 
 [2] M Hasnat, O Alata, A Trémeau, Joint Color-Spatial-Directional clustering and Region Merging (JCSD-RM) for unsupervised RGB-D image segmentation, in arXiv preprint arXiv:1509.01788, **2015**.
 
-[3] N. Silberman, D. Hoiem, P. Kohli, and R. Fergus, “Indoor segmentation and support inference from RGBD images,” in **ECCV** **2012**. Springer, 2012.
+[3] M. A. Hasnat, O. Alata, and A. Tremeau, “Unsupervised RGB-D image segmentation using joint clustering and region merging,” in British Machine Vision Conference (BMVC). BMVA Press, **2014**.
 
-[4] Abul Hasnat, Olivier Alata and Alain Trmeau, Model-Based Hierarchical Clustering with Bregman Divergence and Fisher Mixture Model: Application to Depth Image Analysis, In Statistics and Computing (**STCO**), Vol 26, Issue 4, pp 861880, **2015**.
+[4] N. Silberman, D. Hoiem, P. Kohli, and R. Fergus, “Indoor segmentation and support inference from RGBD images,” in **ECCV** **2012**. Springer, 2012.
 
-[5] Abul Hasnat, Olivier Alata and Alain Tremeau, Unsupervised Clustering of Depth Images using Watson Mixture Model, In Int. Conference on Pattern Recognition (**ICPR**) **2014**, Stockholm, Sweden.
+[5] Abul Hasnat, Olivier Alata and Alain Trmeau, Model-Based Hierarchical Clustering with Bregman Divergence and Fisher Mixture Model: Application to Depth Image Analysis, In Statistics and Computing (**STCO**), Vol 26, Issue 4, pp 861880, **2015**.
+
+[6] Abul Hasnat, Olivier Alata and Alain Tremeau, Unsupervised Clustering of Depth Images using Watson Mixture Model, In Int. Conference on Pattern Recognition (**ICPR**) **2014**, Stockholm, Sweden.

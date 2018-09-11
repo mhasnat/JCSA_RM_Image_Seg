@@ -28,14 +28,14 @@ It runs on Matlab2017b. If you encounter error with - **computeTraceTerm** then 
 
 ## References:
 
-[1] Abul Hasnat, Olivier Alata and Alain Trmeau, Joint Color-Spatial-Directional clustering and Region Merging (JCSD-RM) for unsupervised RGB-D image segmentation, In IEEE Trans. on Pattern Analysis and Machine Intelligence (**TPAMI**), Vol 38, Issue 11, pages 2255 - 2268, **2015**.
+[1] Abul Hasnat, Olivier Alata and Alain Trmeau, Joint Color-Spatial-Directional clustering and Region Merging (JCSD-RM) for unsupervised RGB-D image segmentation, In IEEE Trans. on Pattern Analysis and Machine Intelligence (**TPAMI**), Vol 38, Issue 11, pages 2255 - 2268, **2015**. [`pdf download`](https://arxiv.org/pdf/1509.01788.pdf)
 
-[2] M Hasnat, O Alata, A Trémeau, Joint Color-Spatial-Directional clustering and Region Merging (JCSD-RM) for unsupervised RGB-D image segmentation, in arXiv preprint arXiv:1509.01788, **2015**.
+[2] M Hasnat, O Alata, A Trémeau, Joint Color-Spatial-Directional clustering and Region Merging (JCSD-RM) for unsupervised RGB-D image segmentation, in arXiv preprint arXiv:1509.01788, **2015**. [`pdf download`](https://arxiv.org/pdf/1509.01788.pdf)
 
-[3] M. A. Hasnat, O. Alata, and A. Tremeau, “Unsupervised RGB-D image segmentation using joint clustering and region merging,” in British Machine Vision Conference (BMVC). BMVA Press, **2014**.
+[3] M. A. Hasnat, O. Alata, and A. Tremeau, “Unsupervised RGB-D image segmentation using joint clustering and region merging,” in British Machine Vision Conference (BMVC). BMVA Press, **2014**. [`pdf download`](http://www.bmva.org/bmvc/2014/papers/paper045/index.html)
 
 [4] N. Silberman, D. Hoiem, P. Kohli, and R. Fergus, “Indoor segmentation and support inference from RGBD images,” in **ECCV** **2012**. Springer, 2012.
 
-[5] Abul Hasnat, Olivier Alata and Alain Trmeau, Model-Based Hierarchical Clustering with Bregman Divergence and Fisher Mixture Model: Application to Depth Image Analysis, In Statistics and Computing (**STCO**), Vol 26, Issue 4, pp 861880, **2015**.
+[5] Abul Hasnat, Olivier Alata and Alain Trmeau, Model-Based Hierarchical Clustering with Bregman Divergence and Fisher Mixture Model: Application to Depth Image Analysis, In Statistics and Computing (**STCO**), Vol 26, Issue 4, pp 861880, **2015**. [`pdf download`](https://link.springer.com/epdf/10.1007/s11222-015-9576-3?author_access_token=guKHP_biEt1GZJH3orEjaPe4RwlQNchNByi7wbcMAY7phLRhrbt4ZOG8_2kzHa9Hk7sydZ5efCB8Saw_dieaoRCLdI5FVvwJwcLaa_D3M8GTfE1Hrg5TgMmpQisxS7GVaHibDAPx7v9GUyoqrO5GBw%3D%3D)
 
-[6] Abul Hasnat, Olivier Alata and Alain Tremeau, Unsupervised Clustering of Depth Images using Watson Mixture Model, In Int. Conference on Pattern Recognition (**ICPR**) **2014**, Stockholm, Sweden.
+[6] Abul Hasnat, Olivier Alata and Alain Tremeau, Unsupervised Clustering of Depth Images using Watson Mixture Model, In Int. Conference on Pattern Recognition (**ICPR**) **2014**, Stockholm, Sweden. [`pdf download`](https://www.researchgate.net/publication/264505829_Unsupervised_Clustering_of_Depth_Images_Using_Watson_Mixture_Model)
